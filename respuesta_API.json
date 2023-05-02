@@ -1,0 +1,112 @@
+{
+    "config": {
+        "adapter": [
+            "xhr",
+            "http"
+        ],
+        "data": "[{\"Id\":3345,\"CaseId\":\"793966\",\"CaseType\":4,\"IsBasic\":false,\"UserId\":\"12817\",\"Value\":\"15602\",\"ValueType\":1},{\"Id\":3347,\"CaseId\":\"793966\",\"CaseType\":4,\"IsBasic\":false,\"UserId\":\"12817\",\"Value\":\"15630\",\"ValueType\":1},{\"Id\":3352,\"CaseId\":\"793966\",\"CaseType\":4,\"IsBasic\":false,\"UserId\":\"12817\",\"Value\":\"15660\",\"ValueType\":1},{\"Id\":3344,\"CaseId\":\"793966\",\"CaseType\":4,\"IsBasic\":false,\"UserId\":\"12817\",\"Value\":\"15598\",\"ValueType\":1}]",
+        "env": {
+            "Blob": [Function Blob
+            ],
+            "FormData": [Function FormData
+            ]
+        },
+        "headers": [Object
+        ],
+        "maxBodyLength": -1,
+        "maxContentLength": -1,
+        "method": "post",
+        "timeout": 0,
+        "transformRequest": [
+            [Function transformRequest
+            ]
+        ],
+        "transformResponse": [
+            [Function transformResponse
+            ]
+        ],
+        "transitional": {
+            "clarifyTimeoutError": false,
+            "forcedJSONParsing": true,
+            "silentJSONParsing": true
+        },
+        "url": "https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/additionalfield/update",
+        "validateStatus": [Function validateStatus
+        ],
+        "xsrfCookieName": "XSRF-TOKEN",
+        "xsrfHeaderName": "X-XSRF-TOKEN"
+    },
+    "data": "",
+    "headers": {
+        "access-control-allow-origin": "*",
+        "cache-control": "private",
+        "content-length": "0",
+        "content-security-policy": "form-action 'self'; frame-ancestors 'self'",
+        "date": "Fri, 28 Apr 2023 23:35:34 GMT",
+        "referrer-policy": "origin-when-cross-origin",
+        "x-content-type-options": "nosniff"
+    },
+    "request": {
+        "DONE": 4,
+        "HEADERS_RECEIVED": 2,
+        "LOADING": 3,
+        "OPENED": 1,
+        "UNSENT": 0,
+        "_aborted": false,
+        "_cachedResponse": undefined,
+        "_hasError": false,
+        "_headers": {
+            "accept": "application/json, text/plain, */*",
+            "authorization": "c0tfkla4ff0axy3dzio4qrgw",
+            "content-type": "application/json"
+        },
+        "_incrementalEvents": false,
+        "_lowerCaseResponseHeaders": {
+            "access-control-allow-origin": "*",
+            "cache-control": "private",
+            "content-length": "0",
+            "content-security-policy": "form-action 'self'; frame-ancestors 'self'",
+            "date": "Fri, 28 Apr 2023 23:35:34 GMT",
+            "referrer-policy": "origin-when-cross-origin",
+            "x-content-type-options": "nosniff"
+        },
+        "_method": "POST",
+        "_perfKey": "network_XMLHttpRequest_https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/additionalfield/update",
+        "_performanceLogger": {
+            "_closed": false,
+            "_extras": [Object
+            ],
+            "_pointExtras": [Object
+            ],
+            "_points": [Object
+            ],
+            "_timespans": [Object
+            ]
+        },
+        "_requestId": null,
+        "_response": "",
+        "_responseType": "",
+        "_sent": true,
+        "_subscriptions": [],
+        "_timedOut": false,
+        "_trackingName": "unknown",
+        "_url": "https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/additionalfield/update",
+        "readyState": 4,
+        "responseHeaders": {
+            "Access-Control-Allow-Origin": "*",
+            "Cache-Control": "private",
+            "Content-Length": "0",
+            "Date": "Fri, 28 Apr 2023 23:35:34 GMT",
+            "content-security-policy": "form-action 'self'; frame-ancestors 'self'",
+            "referrer-policy": "origin-when-cross-origin",
+            "x-content-type-options": "nosniff"
+        },
+        "responseURL": "https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/additionalfield/update",
+        "status": 200,
+        "timeout": 0,
+        "upload": {},
+        "withCredentials": true
+    },
+    "status": 200,
+    "statusText": undefined
+}
