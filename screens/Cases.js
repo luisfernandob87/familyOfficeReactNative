@@ -24,8 +24,6 @@ const Cases = () => {
             .then(res => {
                 const token = res.data[1].Value
 
-                console.log(token);
-
                 const obj = {
                     "Paging": {
                         "Start": 1,

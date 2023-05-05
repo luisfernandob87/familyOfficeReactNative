@@ -1,8 +1,8 @@
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal, Pressable } from 'react-native'
 import React, { useState } from 'react';
-import { Dropdown } from 'react-native-element-dropdown';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
+import { SelectList } from 'react-native-dropdown-select-list'
 
 
 const GestionCasasdeRecreo = () => {
@@ -10,45 +10,53 @@ const GestionCasasdeRecreo = () => {
     const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation();
 
-    const dataCasa = [
-        { label: "Puerta del Mar", value: 15602 },
-        { label: "Atitlán", value: 15603 }
+
+    const datosCasa = [
+        { key: "Puerta del Mar", value: "Puerta del Mar" },
+        { key: "Atitlán", value: "Atitlán" }
     ]
 
-    const dataGeneracion = [
-        { label: "2da. Generación", value: 15630 },
-        { label: "3ra. Generación", value: 15631 }
+    const datosGeneracion = [
+        { key: "Generación Familiar", value: "Generación Familiar" },
+        { key: "2da. Generación", value: "2da. Generación" },
+        { key: "3ra. Generación", value: "3ra. Generación" }
     ]
 
-    const dataSolicitante = [
-        { label: "Cofiño Alvarado", value: 15660 },
-        { label: "Cofiño Patty", value: 15661 },
-        { label: "Cofiño Liza", value: 15662 },
-        { label: "Massanet Cofiño, Cristina", value: 15663 },
-        { label: "Massanet Cofiño, Javier", value: 15664 },
-        { label: "Massanet Cofiño, Jorge", value: 15665 },
-        { label: "Cofiño Figueroa, Ana Lucia", value: 15666 },
-        { label: "Cofiño Figueroa, Alvaro Jose", value: 15667 },
-        { label: "Cofiño Figueroa, Rodrigo", value: 15668 },
-        { label: "Fernandez Cofiño, Mariela", value: 15669 },
-        { label: "Fernandez Cofiño, Jose Andres", value: 15670 },
-        { label: "Fernandez Cofiño, Rafael", value: 15671 },
-    ]
 
-    const dataServicios = [
-        { label: "Administración Personal de Servicio", value: 15598 },
-        { label: "Comité Tercera Generación", value: 15601 },
-        { label: "Compra de Insumos", value: 15596 },
-        { label: "Mantenimiento de Casas", value: 15599 },
-        { label: "Presupuesto y su Ejecución", value: 15600 },
-        { label: "Solicitud Pagos Servicios", value: 15597 },
-    ]
+    const datosSolicitante = {
+        "Generación Familiar": [
+            { key: "Solicitante", value: "Solicitante" }
+        ],
+        "2da. Generación": [
+            { key: "COFIÑO ALVARO", value: "COFIÑO ALVARO" },
+            { key: "COFIÑO PATTY", value: "COFIÑO PATTY" },
+            { key: "COFIÑO LIZA", value: "COFIÑO LIZA" },
+        ], "3ra. Generación": [
+            { key: "MASSANET COFIÑO, CRISTINA", value: "MASSANET COFIÑO, CRISTINA" },
+            { key: "MASSANET COFIÑO, JAVIER", value: "MASSANET COFIÑO, JAVIER" },
+            { key: "MASSANET COFIÑO, JORGE", value: "MASSANET COFIÑO, JORGE" },
+            { key: "COFIÑO FIGUEROA, ANA LUCIA", value: "COFIÑO FIGUEROA, ANA LUCIA" },
+            { key: "COFIÑO FIGUEROA, ALVARO JOSE", value: "COFIÑO FIGUEROA, ALVARO JOSE" },
+            { key: "COFIÑO FIGUEROA, RODRIGO", value: "COFIÑO FIGUEROA, RODRIGO" },
+            { key: "FERNANDEZ COFIÑO, MARIELA", value: "FERNANDEZ COFIÑO, MARIELA" },
+            { key: "FERNANDEZ COFIÑO, JOSE ANDRES", value: "FERNANDEZ COFIÑO, JOSE ANDRES" },
+            { key: "FERNANDEZ COFIÑO, RAFAEL", value: "FERNANDEZ COFIÑO, RAFAEL" },
+        ]
+    }
 
+    const datosServicios = [
+        { key: "Administración Personal de Servicio", value: "Administración Personal de Servicio" },
+        { key: "Comité Tercera Generación", value: "Comité Tercera Generación" },
+        { key: "Compra de Insumos", value: "Compra de Insumos" },
+        { key: "Mantenimiento de Casas", value: "Mantenimiento de Casas" },
+        { key: "Presupuesto y su Ejecución", value: "Presupuesto y su Ejecución" },
+        { key: "Solicitud Pagos Servicios", value: "Solicitud Pagos Servicios" },
+    ]
 
     const [value, setValue] = useState(null);
-    const [valueGeneracion, setValueGeneracion] = useState(null);
-    const [valueSolicitante, setValueSolicitante] = useState(null);
-    const [valueServicios, setValueServicios] = useState(null);
+    const [valueGeneracion, setValueGeneracion] = useState("");
+    const [valueSolicitante, setValueSolicitante] = useState("");
+    const [valueServicios, setValueServicios] = useState("");
     const [asunto, setAsunto] = useState(null);
     const [desc, setDesc] = useState(null);
     const [caso, setCaso] = useState({});
@@ -68,9 +76,11 @@ const GestionCasasdeRecreo = () => {
 
     function submitBtn() {
 
-        if (value == null || valueGeneracion == null || valueSolicitante == null || valueServicios == null || asunto == null || desc == null) {
+        if (value == null || valueGeneracion == null || valueGeneracion == "Generación Familiar" || valueSolicitante == null || valueSolicitante == "Solicitante" || valueServicios == null || asunto == null || desc == null) {
             Alert.alert('Por favor llenar toda la información que se solicita')
         } else {
+
+
             axios.post('https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/user/login', user)
                 .then(res => {
                     const token = res.data[1].Value
@@ -82,7 +92,7 @@ const GestionCasasdeRecreo = () => {
                         },
                         {
                             "Field": "CategoryId",
-                            "Value": 1817
+                            "Value": 1815
                         },
                         {
                             "Field": "RegistryTypeId",
@@ -90,7 +100,7 @@ const GestionCasasdeRecreo = () => {
                         },
                         {
                             "Field": "StateId",
-                            "Value": 177
+                            "Value": 158
                         },
                         {
                             "Field": "ServiceId",
@@ -138,61 +148,62 @@ const GestionCasasdeRecreo = () => {
                         .then(res => {
                             setCaso(res.data[0].Value, setCasoPublico(res.data[2].Value))
                             setModalVisible(true)
-
-                            const bodyAdicional = [
-                                {
-                                    "Id": 3345,
-                                    "CaseId": `${caso}`,
-                                    "CaseType": 4,
-                                    "IsBasic": false,
-                                    "UserId": "12817",
-                                    "Value": `${value}`,
-                                    "ValueType": 1
-                                },
-                                {
-                                    "Id": 3347,
-                                    "CaseId": `${caso}`,
-                                    "CaseType": 4,
-                                    "IsBasic": false,
-                                    "UserId": "12817",
-                                    "Value": `${valueGeneracion}`,
-                                    "ValueType": 1
-                                },
-                                {
-                                    "Id": 3352,
-                                    "CaseId": `${caso}`,
-                                    "CaseType": 4,
-                                    "IsBasic": false,
-                                    "UserId": "12817",
-                                    "Value": `${valueSolicitante}`,
-                                    "ValueType": 1
-                                },
-                                {
-                                    "Id": 3344,
-                                    "CaseId": `${caso}`,
-                                    "CaseType": 4,
-                                    "IsBasic": false,
-                                    "UserId": "12817",
-                                    "Value": `${valueServicios}`,
-                                    "ValueType": 1
-                                }
-                            ]
-
-                            setTimeout(() => {
-                                axios.post('https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/additionalfield/update', bodyAdicional, {
-                                    headers: {
-                                        'Authorization': `${token}`
-                                    }
-                                }).then(res => console.log(res))
-                            }, 5000);
-
-
                         })
-                    // console.log(caso);
-                    // console.log(casoPublico);
-
                 })
         }
+    }
+    const updCaso = () => {
+
+        axios.post('https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/user/login', user)
+            .then(res => {
+                const token = res.data[1].Value
+
+
+                const bodyAdicional = [
+                    {
+                        "Id": 3345,
+                        "CaseId": caso,
+                        "CaseType": 4,
+                        "IsBasic": false,
+                        "UserId": "12817",
+                        "Value": value,
+                        "ValueType": 1
+                    },
+                    {
+                        "Id": 3347,
+                        "CaseId": caso,
+                        "CaseType": 4,
+                        "IsBasic": false,
+                        "UserId": "12817",
+                        "Value": valueGeneracion,
+                        "ValueType": 1
+                    },
+                    {
+                        "Id": 3352,
+                        "CaseId": caso,
+                        "CaseType": 4,
+                        "IsBasic": false,
+                        "UserId": "12817",
+                        "Value": valueSolicitante,
+                        "ValueType": 1
+                    },
+                    {
+                        "Id": 3344,
+                        "CaseId": caso,
+                        "CaseType": 4,
+                        "IsBasic": false,
+                        "UserId": "12817",
+                        "Value": valueServicios,
+                        "ValueType": 1
+                    }
+                ]
+
+                axios.post('https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/additionalfield/update', bodyAdicional, {
+                    headers: {
+                        'Authorization': `${token}`
+                    }
+                }).then(res => console.log(res))
+            })
     }
 
     return (
@@ -206,45 +217,36 @@ const GestionCasasdeRecreo = () => {
                 onChangeText={setDesc}
                 style={styles.inputDesc}
                 placeholder='Descripción' />
-            <Dropdown style={styles.dropdown}
-                data={dataCasa}
-                labelField="label"
-                valueField="value"
+
+            <SelectList
+                boxStyles={{ marginTop: 20, marginLeft: 10, marginRight: 10 }}
+                search={false}
+                setSelected={setValue}
+                data={datosCasa}
                 placeholder='Casa de Recreo'
-                value={value}
-                onChange={item => {
-                    setValue(item.value)
-                }}
             />
-            <Dropdown style={styles.dropdown}
-                data={dataGeneracion}
-                labelField="label"
-                valueField="value"
+            <SelectList
+                boxStyles={{ marginTop: 20, marginLeft: 10, marginRight: 10 }}
+                search={false}
+                setSelected={setValueGeneracion}
+                data={datosGeneracion}
                 placeholder='Generación Familiar'
-                value={valueGeneracion}
-                onChange={item => {
-                    setValueGeneracion(item.value)
-                }}
+                defaultOption={{ key: "Generación Familiar", value: "Generación Familiar" }}
             />
-            <Dropdown style={styles.dropdown}
-                data={dataSolicitante}
-                labelField="label"
-                valueField="value"
+            <SelectList
+                boxStyles={{ marginTop: 20, marginLeft: 10, marginRight: 10 }}
+                search={false}
+                setSelected={setValueSolicitante}
+                data={datosSolicitante[valueGeneracion]}
                 placeholder='Solicitante'
-                value={valueSolicitante}
-                onChange={item => {
-                    setValueSolicitante(item.value)
-                }}
+                defaultOption={{ key: "Solicitante", value: "Solicitante" }}
             />
-            <Dropdown style={styles.dropdown}
-                data={dataServicios}
-                labelField="label"
-                valueField="value"
+            <SelectList
+                boxStyles={{ marginTop: 20, marginLeft: 10, marginRight: 10 }}
+                search={false}
+                setSelected={setValueServicios}
+                data={datosServicios}
                 placeholder='Tipo de Servicio'
-                value={valueServicios}
-                onChange={item => {
-                    setValueServicios(item.value)
-                }}
             />
             <TouchableOpacity style={styles.boton} onPress={() => submitBtn()}>
                 <View style={styles.centrar}>
@@ -267,6 +269,7 @@ const GestionCasasdeRecreo = () => {
                                 () => {
                                     navigation.navigate("Home")
                                     setModalVisible(!modalVisible)
+                                    updCaso()
                                 }
                             }>
                             <Text style={styles.textStyle}>Cerrar</Text>
@@ -274,11 +277,6 @@ const GestionCasasdeRecreo = () => {
                     </View>
                 </View>
             </Modal >
-            {/* <Pressable
-                style={[styles.button, styles.buttonOpen]}
-                onPress={() => setModalVisible(true)}>
-                <Text style={styles.textStyle}>Show Modal</Text>
-            </Pressable> */}
         </View>
     )
 }
@@ -301,18 +299,6 @@ const styles = StyleSheet.create({
         padding: 10,
         marginTop: 20,
         borderRadius: 10
-    },
-    dropdown: {
-        marginRight: 10,
-        marginLeft: 10,
-        marginTop: 20,
-        maxHeight: 300,
-        height: 50,
-        fontSize: 16,
-        borderColor: '#a9a9a9',
-        borderWidth: 1,
-        borderRadius: 10,
-        padding: 10,
     },
     boton: {
         backgroundColor: '#8fbc8f',
