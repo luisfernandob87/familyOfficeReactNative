@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal, Pressable } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal, Pressable, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
@@ -9,6 +9,7 @@ const GestionCasasdeRecreo = () => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation();
+    const [loading, setLoading] = useState(false)
 
 
     const datosCasa = [
@@ -79,7 +80,7 @@ const GestionCasasdeRecreo = () => {
         if (value == null || valueGeneracion == null || valueGeneracion == "Generación Familiar" || valueSolicitante == null || valueSolicitante == "Solicitante" || valueServicios == null || asunto == null || desc == null) {
             Alert.alert('Por favor llenar toda la información que se solicita')
         } else {
-
+            setLoading(true)
 
             axios.post('https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/user/login', user)
                 .then(res => {
@@ -147,6 +148,7 @@ const GestionCasasdeRecreo = () => {
                     })
                         .then(res => {
                             setCaso(res.data[0].Value, setCasoPublico(res.data[2].Value))
+                            setLoading(false)
                             setModalVisible(true)
                         })
                 })
@@ -208,14 +210,15 @@ const GestionCasasdeRecreo = () => {
 
     return (
         <View>
+
             <TextInput
                 onChangeText={setAsunto}
-                style={styles.inputAsunto}
+                style={styles.input}
                 placeholder="Asunto" />
 
             <TextInput
                 onChangeText={setDesc}
-                style={styles.inputDesc}
+                style={styles.input}
                 placeholder='Descripción' />
 
             <SelectList
@@ -253,6 +256,7 @@ const GestionCasasdeRecreo = () => {
                     <Text style={styles.textBoton}>Registrar Caso</Text>
                 </View>
             </TouchableOpacity>
+            <ActivityIndicator animating={loading} size="large" color='#8fbc8f' style={{ marginTop: 30 }} />
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -284,15 +288,7 @@ const GestionCasasdeRecreo = () => {
 export default GestionCasasdeRecreo
 
 const styles = StyleSheet.create({
-    inputAsunto: {
-        marginRight: 10,
-        marginLeft: 10,
-        borderWidth: 1,
-        padding: 10,
-        marginTop: 20,
-        borderRadius: 10
-    },
-    inputDesc: {
+    input: {
         marginRight: 10,
         marginLeft: 10,
         borderWidth: 1,

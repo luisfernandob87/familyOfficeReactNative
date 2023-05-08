@@ -1,15 +1,14 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal, Pressable } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal, Pressable, ActivityIndicator } from 'react-native'
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { SelectList } from 'react-native-dropdown-select-list'
 
-
-const GestionCasasdeRecreo = () => {
+const ReservaCasasdeRecreo = () => {
 
     const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation();
-
+    const [loading, setLoading] = useState(false)
 
     const datosCasa = [
         { key: "Puerta del Mar", value: "Puerta del Mar" },
@@ -79,7 +78,7 @@ const GestionCasasdeRecreo = () => {
         if (value == null || valueGeneracion == null || valueGeneracion == "Generación Familiar" || valueSolicitante == null || valueSolicitante == "Solicitante" || valueServicios == null || asunto == null || desc == null) {
             Alert.alert('Por favor llenar toda la información que se solicita')
         } else {
-
+            setLoading(true)
 
             axios.post('https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/user/login', user)
                 .then(res => {
@@ -147,6 +146,7 @@ const GestionCasasdeRecreo = () => {
                     })
                         .then(res => {
                             setCaso(res.data[0].Value, setCasoPublico(res.data[2].Value))
+                            setLoading(false)
                             setModalVisible(true)
                         })
                 })
@@ -208,14 +208,15 @@ const GestionCasasdeRecreo = () => {
 
     return (
         <View>
+            <RNDateTimePicker mode="time" />
             <TextInput
                 onChangeText={setAsunto}
-                style={styles.inputAsunto}
+                style={styles.input}
                 placeholder="Asunto" />
 
             <TextInput
                 onChangeText={setDesc}
-                style={styles.inputDesc}
+                style={styles.input}
                 placeholder='Descripción' />
 
             <SelectList
@@ -248,11 +249,13 @@ const GestionCasasdeRecreo = () => {
                 data={datosServicios}
                 placeholder='Tipo de Servicio'
             />
+
             <TouchableOpacity style={styles.boton} onPress={() => submitBtn()}>
                 <View style={styles.centrar}>
                     <Text style={styles.textBoton}>Registrar Caso</Text>
                 </View>
             </TouchableOpacity>
+            <ActivityIndicator animating={loading} size="large" color='#8fbc8f' style={{ marginTop: 30 }} />
             <Modal
                 animationType="slide"
                 transparent={true}
@@ -281,18 +284,10 @@ const GestionCasasdeRecreo = () => {
     )
 }
 
-export default GestionCasasdeRecreo
+export default ReservaCasasdeRecreo
 
 const styles = StyleSheet.create({
-    inputAsunto: {
-        marginRight: 10,
-        marginLeft: 10,
-        borderWidth: 1,
-        padding: 10,
-        marginTop: 20,
-        borderRadius: 10
-    },
-    inputDesc: {
+    input: {
         marginRight: 10,
         marginLeft: 10,
         borderWidth: 1,
