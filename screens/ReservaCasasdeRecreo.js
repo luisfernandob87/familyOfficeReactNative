@@ -3,12 +3,57 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
 import { SelectList } from 'react-native-dropdown-select-list'
+import DatePicker from "react-native-modern-datepicker";
+import { getFormatedDate } from "react-native-modern-datepicker";
+
 
 const ReservaCasasdeRecreo = () => {
+    //fecha de ingreso
+    const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
+    const today = new Date();
+    const startDate = getFormatedDate(
+        today.setDate(today.getDate() + 1),
+        "YYYY/MM/DD"
+    );
+    const [selectedStartDate, setSelectedStartDate] = useState("Fecha de Ingreso");
+    const [startedDate, setStartedDate] = useState("01/01/2023");
+
+    function handleChangeStartDate(propDate) {
+        setStartedDate(propDate);
+    }
+    const handleOnPressStartDate = () => {
+        setOpenStartDatePicker(!openStartDatePicker);
+    };
+
+    //
+
+    const [openStartDatePickerSalida, setOpenStartDatePickerSalida] = useState(false);
+    const todaySalida = new Date();
+    const startDateSalida = getFormatedDate(
+        todaySalida.setDate(todaySalida.getDate() + 1),
+        "YYYY/MM/DD"
+    );
+    const [selectedStartDateSalida, setSelectedStartDateSalida] = useState("Fecha de Salida");
+    const [startedDateSalida, setStartedDateSalida] = useState("01/01/2023");
+
+    function handleChangeStartDateSalida(propDate) {
+        setStartedDateSalida(propDate);
+    }
+    const handleOnPressStartDateSalida = () => {
+        setOpenStartDatePickerSalida(!openStartDatePickerSalida);
+    };
+
+
+    console.log(selectedStartDate);
+    console.log(selectedStartDateSalida);
+
+    //
+
 
     const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation();
     const [loading, setLoading] = useState(false)
+
 
     const datosCasa = [
         { key: "Puerta del Mar", value: "Puerta del Mar" },
@@ -43,19 +88,11 @@ const ReservaCasasdeRecreo = () => {
         ]
     }
 
-    const datosServicios = [
-        { key: "Administración Personal de Servicio", value: "Administración Personal de Servicio" },
-        { key: "Comité Tercera Generación", value: "Comité Tercera Generación" },
-        { key: "Compra de Insumos", value: "Compra de Insumos" },
-        { key: "Mantenimiento de Casas", value: "Mantenimiento de Casas" },
-        { key: "Presupuesto y su Ejecución", value: "Presupuesto y su Ejecución" },
-        { key: "Solicitud Pagos Servicios", value: "Solicitud Pagos Servicios" },
-    ]
+
 
     const [value, setValue] = useState(null);
     const [valueGeneracion, setValueGeneracion] = useState("");
     const [valueSolicitante, setValueSolicitante] = useState("");
-    const [valueServicios, setValueServicios] = useState("");
     const [asunto, setAsunto] = useState(null);
     const [desc, setDesc] = useState(null);
     const [caso, setCaso] = useState({});
@@ -208,7 +245,7 @@ const ReservaCasasdeRecreo = () => {
 
     return (
         <View>
-            <RNDateTimePicker mode="time" />
+
             <TextInput
                 onChangeText={setAsunto}
                 style={styles.input}
@@ -242,13 +279,63 @@ const ReservaCasasdeRecreo = () => {
                 placeholder='Solicitante'
                 defaultOption={{ key: "Solicitante", value: "Solicitante" }}
             />
-            <SelectList
-                boxStyles={{ marginTop: 20, marginLeft: 10, marginRight: 10 }}
-                search={false}
-                setSelected={setValueServicios}
-                data={datosServicios}
-                placeholder='Tipo de Servicio'
-            />
+            <View style={styles.input}>
+                <TouchableOpacity
+                    onPress={handleOnPressStartDate}
+                >
+                    <Text style={{ color: 'black' }}>{selectedStartDate}</Text>
+                </TouchableOpacity>
+            </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openStartDatePicker}
+            >
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <DatePicker
+                        mode="calendar"
+                        minimumDate={startDate}
+                        selected={startedDate}
+                        onDateChanged={handleChangeStartDate}
+                        onSelectedChange={(date) => setSelectedStartDate(date)}
+                        options={{
+                            mainColor: '#8fbc8f'
+                        }}
+                    />
+                    <TouchableOpacity activeOpacity={1} onPress={handleOnPressStartDate} style={{ width: '100%' }}>
+                        <Text style={{ color: '#8fbc8f', textAlign: 'center', backgroundColor: 'white', padding: 20, fontWeight: 'bold' }}>Seleccionar</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
+            {/* salida */}
+            <View style={styles.input}>
+                <TouchableOpacity
+                    onPress={handleOnPressStartDateSalida}
+                >
+                    <Text style={{ color: 'black' }}>{selectedStartDateSalida}</Text>
+                </TouchableOpacity>
+            </View>
+            <Modal
+                animationType="slide"
+                transparent={true}
+                visible={openStartDatePickerSalida}
+            >
+                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                    <DatePicker
+                        mode="calendar"
+                        minimumDate={startDateSalida}
+                        selected={startedDateSalida}
+                        onDateChanged={handleChangeStartDateSalida}
+                        onSelectedChange={(date) => setSelectedStartDateSalida(date)}
+                        options={{
+                            mainColor: '#8fbc8f'
+                        }}
+                    />
+                    <TouchableOpacity activeOpacity={1} onPress={handleOnPressStartDateSalida} style={{ width: '100%', }}>
+                        <Text style={{ color: '#8fbc8f', textAlign: 'center', backgroundColor: 'white', padding: 20, fontWeight: 'bold' }}>Seleccionar</Text>
+                    </TouchableOpacity>
+                </View>
+            </Modal>
 
             <TouchableOpacity style={styles.boton} onPress={() => submitBtn()}>
                 <View style={styles.centrar}>
