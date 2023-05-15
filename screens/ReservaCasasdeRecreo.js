@@ -8,12 +8,14 @@ import { getFormatedDate } from "react-native-modern-datepicker";
 
 
 const ReservaCasasdeRecreo = () => {
+
+
     //fecha de ingreso
     const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
     const today = new Date();
     const startDate = getFormatedDate(
         today.setDate(today.getDate() + 1),
-        "YYYY/MM/DD"
+        "DD/MM/YYYY"
     );
     const [selectedStartDate, setSelectedStartDate] = useState("Fecha de Ingreso");
     const [startedDate, setStartedDate] = useState("01/01/2023");
@@ -25,13 +27,13 @@ const ReservaCasasdeRecreo = () => {
         setOpenStartDatePicker(!openStartDatePicker);
     };
 
-    //
+    //fecha de salida
 
     const [openStartDatePickerSalida, setOpenStartDatePickerSalida] = useState(false);
     const todaySalida = new Date();
     const startDateSalida = getFormatedDate(
         todaySalida.setDate(todaySalida.getDate() + 1),
-        "YYYY/MM/DD"
+        "DD/MM/YYYY"
     );
     const [selectedStartDateSalida, setSelectedStartDateSalida] = useState("Fecha de Salida");
     const [startedDateSalida, setStartedDateSalida] = useState("01/01/2023");
@@ -42,10 +44,6 @@ const ReservaCasasdeRecreo = () => {
     const handleOnPressStartDateSalida = () => {
         setOpenStartDatePickerSalida(!openStartDatePickerSalida);
     };
-
-
-    console.log(selectedStartDate);
-    console.log(selectedStartDateSalida);
 
     //
 
@@ -112,7 +110,7 @@ const ReservaCasasdeRecreo = () => {
 
     function submitBtn() {
 
-        if (value == null || valueGeneracion == null || valueGeneracion == "Generación Familiar" || valueSolicitante == null || valueSolicitante == "Solicitante" || valueServicios == null || asunto == null || desc == null) {
+        if (value == null || valueGeneracion == null || valueGeneracion == "Generación Familiar" || valueSolicitante == null || valueSolicitante == "Solicitante" || asunto == null || desc == null) {
             Alert.alert('Por favor llenar toda la información que se solicita')
         } else {
             setLoading(true)
@@ -128,7 +126,7 @@ const ReservaCasasdeRecreo = () => {
                         },
                         {
                             "Field": "CategoryId",
-                            "Value": 1815
+                            "Value": 1817
                         },
                         {
                             "Field": "RegistryTypeId",
@@ -136,7 +134,7 @@ const ReservaCasasdeRecreo = () => {
                         },
                         {
                             "Field": "StateId",
-                            "Value": 158
+                            "Value": 177
                         },
                         {
                             "Field": "ServiceId",
@@ -186,6 +184,7 @@ const ReservaCasasdeRecreo = () => {
                             setLoading(false)
                             setModalVisible(true)
                         })
+
                 })
         }
     }
@@ -198,7 +197,7 @@ const ReservaCasasdeRecreo = () => {
 
                 const bodyAdicional = [
                     {
-                        "Id": 3345,
+                        "Id": 3353,
                         "CaseId": caso,
                         "CaseType": 4,
                         "IsBasic": false,
@@ -207,7 +206,7 @@ const ReservaCasasdeRecreo = () => {
                         "ValueType": 1
                     },
                     {
-                        "Id": 3347,
+                        "Id": 3354,
                         "CaseId": caso,
                         "CaseType": 4,
                         "IsBasic": false,
@@ -216,7 +215,7 @@ const ReservaCasasdeRecreo = () => {
                         "ValueType": 1
                     },
                     {
-                        "Id": 3352,
+                        "Id": 3355,
                         "CaseId": caso,
                         "CaseType": 4,
                         "IsBasic": false,
@@ -225,16 +224,25 @@ const ReservaCasasdeRecreo = () => {
                         "ValueType": 1
                     },
                     {
-                        "Id": 3344,
+                        "Id": 3356,
                         "CaseId": caso,
                         "CaseType": 4,
                         "IsBasic": false,
                         "UserId": "12817",
-                        "Value": valueServicios,
-                        "ValueType": 1
+                        "Value": selectedStartDate,
+                        "ValueType": 2
+                    },
+                    {
+                        "Id": 3357,
+                        "CaseId": caso,
+                        "CaseType": 4,
+                        "IsBasic": false,
+                        "UserId": "12817",
+                        "Value": selectedStartDateSalida,
+                        "ValueType": 2
                     }
                 ]
-
+                console.log(bodyAdicional);
                 axios.post('https://sarservicedesk.sarlatam.com/ASDKAPI/Api/v8.6/additionalfield/update', bodyAdicional, {
                     headers: {
                         'Authorization': `${token}`
@@ -293,7 +301,7 @@ const ReservaCasasdeRecreo = () => {
             >
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <DatePicker
-                        mode="calendar"
+                        mode="datepicker"
                         minimumDate={startDate}
                         selected={startedDate}
                         onDateChanged={handleChangeStartDate}
@@ -301,6 +309,7 @@ const ReservaCasasdeRecreo = () => {
                         options={{
                             mainColor: '#8fbc8f'
                         }}
+                        locale='es-ES'
                     />
                     <TouchableOpacity activeOpacity={1} onPress={handleOnPressStartDate} style={{ width: '100%' }}>
                         <Text style={{ color: '#8fbc8f', textAlign: 'center', backgroundColor: 'white', padding: 20, fontWeight: 'bold' }}>Seleccionar</Text>
@@ -322,7 +331,7 @@ const ReservaCasasdeRecreo = () => {
             >
                 <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
                     <DatePicker
-                        mode="calendar"
+                        mode="datepicker"
                         minimumDate={startDateSalida}
                         selected={startedDateSalida}
                         onDateChanged={handleChangeStartDateSalida}
