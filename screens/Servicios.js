@@ -16,8 +16,6 @@ const Servicios = () => {
         { key: "2da. Generación", value: "2da. Generación" },
         { key: "3ra. Generación", value: "3ra. Generación" }
     ]
-
-
     const datosSolicitante = {
         "Generación Familiar": [
             { key: "Solicitante", value: "Solicitante" }
@@ -40,12 +38,13 @@ const Servicios = () => {
     }
 
     const datosServicios = [
-        { key: "Administración Personal de Servicio", value: "Administración Personal de Servicio" },
-        { key: "Comité Tercera Generación", value: "Comité Tercera Generación" },
-        { key: "Compra de Insumos", value: "Compra de Insumos" },
-        { key: "Mantenimiento de Casas", value: "Mantenimiento de Casas" },
-        { key: "Presupuesto y su Ejecución", value: "Presupuesto y su Ejecución" },
-        { key: "Solicitud Pagos Servicios", value: "Solicitud Pagos Servicios" },
+        { key: "Citas Servicios Médicos y Profesionales", value: "Citas Servicios Médicos y Profesionales" },
+        { key: "Gestión de CXC a Familia", value: "Gestión de CXC a Familia" },
+        { key: "Gestiones Bancarias", value: "Gestiones Bancarias" },
+        { key: "Gestiones Otras Instituciones", value: "Gestiones Otras Instituciones" },
+        { key: "Gestiones Secretariales", value: "Gestiones Secretariales" },
+        { key: "Llenado de Formularios", value: "Llenado de Formularios" },
+        { key: "Reserva Boletos Aéreos y Hoteles", value: "Reserva Boletos Aéreos y Hoteles" },
     ]
 
     const [valueGeneracion, setValueGeneracion] = useState("");
@@ -70,7 +69,7 @@ const Servicios = () => {
 
     function submitBtn() {
 
-        if (value == null || valueGeneracion == null || valueGeneracion == "Generación Familiar" || valueSolicitante == null || valueSolicitante == "Solicitante" || valueServicios == null || asunto == null || desc == null) {
+        if (valueGeneracion == null || valueGeneracion == "Generación Familiar" || valueSolicitante == null || valueSolicitante == "Solicitante" || valueServicios == null || asunto == null || desc == null) {
             Alert.alert('Por favor llenar toda la información que se solicita')
         } else {
             setLoading(true)
@@ -86,7 +85,7 @@ const Servicios = () => {
                         },
                         {
                             "Field": "CategoryId",
-                            "Value": 1815
+                            "Value": 1816
                         },
                         {
                             "Field": "RegistryTypeId",
@@ -98,11 +97,11 @@ const Servicios = () => {
                         },
                         {
                             "Field": "ServiceId",
-                            "Value": 435
+                            "Value": 437
                         },
                         {
                             "Field": "SlaId",
-                            "Value": 979
+                            "Value": 981
                         },
                         {
                             "Field": "GroupId",
@@ -156,7 +155,7 @@ const Servicios = () => {
 
                 const bodyAdicional = [
                     {
-                        "Id": 3347,
+                        "Id": 3349,
                         "CaseId": caso,
                         "CaseType": 4,
                         "IsBasic": false,
@@ -165,7 +164,7 @@ const Servicios = () => {
                         "ValueType": 1
                     },
                     {
-                        "Id": 3352,
+                        "Id": 3350,
                         "CaseId": caso,
                         "CaseType": 4,
                         "IsBasic": false,
@@ -174,7 +173,7 @@ const Servicios = () => {
                         "ValueType": 1
                     },
                     {
-                        "Id": 3344,
+                        "Id": 3346,
                         "CaseId": caso,
                         "CaseType": 4,
                         "IsBasic": false,

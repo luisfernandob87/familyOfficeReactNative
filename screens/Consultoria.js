@@ -39,12 +39,11 @@ const Consultoria = () => {
     }
 
     const datosServicios = [
-        { key: "Administración Personal de Servicio", value: "Administración Personal de Servicio" },
-        { key: "Comité Tercera Generación", value: "Comité Tercera Generación" },
-        { key: "Compra de Insumos", value: "Compra de Insumos" },
-        { key: "Mantenimiento de Casas", value: "Mantenimiento de Casas" },
-        { key: "Presupuesto y su Ejecución", value: "Presupuesto y su Ejecución" },
-        { key: "Solicitud Pagos Servicios", value: "Solicitud Pagos Servicios" },
+        { key: "Coordinar Consejo de Familia", value: "Coordinar Consejo de Familia" },
+        { key: "Custodia Documentos Legales", value: "Custodia Documentos Legales" },
+        { key: "Gestión Pagos Miami/Panamá", value: "Gestión Pagos Miami/Panamá" },
+        { key: "Llenado de Formularios FIP´s", value: "Llenado de Formularios FIP´s" },
+        { key: "Trámites Legales", value: "Trámites Legales" },
     ]
 
     const [valueGeneracion, setValueGeneracion] = useState("");
@@ -69,7 +68,7 @@ const Consultoria = () => {
 
     function submitBtn() {
 
-        if (value == null || valueGeneracion == null || valueGeneracion == "Generación Familiar" || valueSolicitante == null || valueSolicitante == "Solicitante" || valueServicios == null || asunto == null || desc == null) {
+        if (valueGeneracion == null || valueGeneracion == "Generación Familiar" || valueSolicitante == null || valueSolicitante == "Solicitante" || valueServicios == null || asunto == null || desc == null) {
             Alert.alert('Por favor llenar toda la información que se solicita')
         } else {
             setLoading(true)
@@ -85,7 +84,7 @@ const Consultoria = () => {
                         },
                         {
                             "Field": "CategoryId",
-                            "Value": 1815
+                            "Value": 1814
                         },
                         {
                             "Field": "RegistryTypeId",
@@ -97,11 +96,11 @@ const Consultoria = () => {
                         },
                         {
                             "Field": "ServiceId",
-                            "Value": 435
+                            "Value": 436
                         },
                         {
                             "Field": "SlaId",
-                            "Value": 979
+                            "Value": 980
                         },
                         {
                             "Field": "GroupId",
@@ -155,7 +154,7 @@ const Consultoria = () => {
 
                 const bodyAdicional = [
                     {
-                        "Id": 3347,
+                        "Id": 3348,
                         "CaseId": caso,
                         "CaseType": 4,
                         "IsBasic": false,
@@ -164,7 +163,7 @@ const Consultoria = () => {
                         "ValueType": 1
                     },
                     {
-                        "Id": 3352,
+                        "Id": 3351,
                         "CaseId": caso,
                         "CaseType": 4,
                         "IsBasic": false,
@@ -173,7 +172,7 @@ const Consultoria = () => {
                         "ValueType": 1
                     },
                     {
-                        "Id": 3344,
+                        "Id": 3343,
                         "CaseId": caso,
                         "CaseType": 4,
                         "IsBasic": false,
