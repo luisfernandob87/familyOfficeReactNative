@@ -1,53 +1,73 @@
-import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal, Pressable, ActivityIndicator } from 'react-native'
+import { StyleSheet, Text, View, TextInput, TouchableOpacity, Alert, Modal, Pressable, ActivityIndicator, Platform } from 'react-native'
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigation } from '@react-navigation/native';
-import { SelectList } from 'react-native-dropdown-select-list'
-import DatePicker from "react-native-modern-datepicker";
-import { getFormatedDate } from "react-native-modern-datepicker";
+import { SelectList } from 'react-native-dropdown-select-list';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import moment from 'moment/moment';
+import 'moment/locale/es'
 
 
 const ReservaCasasdeRecreo = () => {
 
-
-    //fecha de ingreso
-    const [openStartDatePicker, setOpenStartDatePicker] = useState(false);
-    const today = new Date();
-    const startDate = getFormatedDate(
-        today.setDate(today.getDate() + 1),
-        "DD/MM/YYYY"
-    );
-    const [selectedStartDate, setSelectedStartDate] = useState("Fecha de Ingreso");
-    const [startedDate, setStartedDate] = useState("01/01/2023");
-
-    function handleChangeStartDate(propDate) {
-        setStartedDate(propDate);
-    }
-    const handleOnPressStartDate = () => {
-        setOpenStartDatePicker(!openStartDatePicker);
-    };
-
-    //fecha de salida
-
-    const [openStartDatePickerSalida, setOpenStartDatePickerSalida] = useState(false);
-    const todaySalida = new Date();
-    const startDateSalida = getFormatedDate(
-        todaySalida.setDate(todaySalida.getDate() + 1),
-        "DD/MM/YYYY"
-    );
-    const [selectedStartDateSalida, setSelectedStartDateSalida] = useState("Fecha de Salida");
-    const [startedDateSalida, setStartedDateSalida] = useState("01/01/2023");
-
-    function handleChangeStartDateSalida(propDate) {
-        setStartedDateSalida(propDate);
-    }
-    const handleOnPressStartDateSalida = () => {
-        setOpenStartDatePickerSalida(!openStartDatePickerSalida);
-    };
-
     //
 
+    const [date, setDate] = useState(new Date());
+    const [showPicker, setShowPicker] = useState(false)
+    const [fechaIngreso, setFechaIngreso] = useState("")
 
+
+
+    const toggleDatePicker = () => {
+        setShowPicker(!showPicker)
+    }
+
+    const onChange = ({ type }, selectedDate) => {
+        if (type == "set") {
+            const currentDate = selectedDate
+            setDate(currentDate)
+            if (Platform.OS == "android") {
+                toggleDatePicker()
+                setFechaIngreso(currentDate.toDateString())
+
+            }
+        } else {
+            toggleDatePicker()
+        }
+    }
+
+    const selectedStartDate = moment(fechaIngreso).format("DD/MM/YYYY h:mm:ss a")
+    console.log(selectedStartDate)
+
+    //
+    const [dateSalida, setDateSalida] = useState(new Date());
+    const [showPickerSalida, setShowPickerSalida] = useState(false)
+    const [fechaSalida, setFechaSalida] = useState("")
+
+
+
+    const toggleDatePickerSalida = () => {
+        setShowPickerSalida(!showPickerSalida)
+    }
+
+    const onChangeSalida = ({ type }, selectedDate) => {
+        if (type == "set") {
+            const currentDate = selectedDate
+            setDate(currentDate)
+            if (Platform.OS == "android") {
+                toggleDatePickerSalida()
+                setFechaSalida(currentDate.toDateString())
+
+            }
+        } else {
+            toggleDatePickerSalida()
+        }
+    }
+
+    const selectedStartDateSalida = moment(fechaSalida).format("DD/MM/YYYY h:mm:ss a")
+    console.log(selectedStartDateSalida)
+
+    //
     const [modalVisible, setModalVisible] = useState(false);
     const navigation = useNavigation();
     const [loading, setLoading] = useState(false)
@@ -288,63 +308,38 @@ const ReservaCasasdeRecreo = () => {
                 defaultOption={{ key: "Solicitante", value: "Solicitante" }}
             />
             <View style={styles.input}>
-                <TouchableOpacity
-                    onPress={handleOnPressStartDate}
-                >
-                    <Text style={{ color: 'black' }}>{selectedStartDate}</Text>
-                </TouchableOpacity>
+                {!showPicker && (<Pressable onPress={toggleDatePicker}>
+                    <TextInput style={{ color: 'black' }} value={fechaIngreso === "" ? "Ingrese Fecha de Ingreso" : moment(fechaIngreso).format("DD/MM/YYYY")} onChangeText={setFechaIngreso} editable={false} placeholder='Fecha de Ingreso' />
+                </Pressable>)}
             </View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={openStartDatePicker}
-            >
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <DatePicker
-                        mode="datepicker"
-                        minimumDate={startDate}
-                        selected={startedDate}
-                        onDateChanged={handleChangeStartDate}
-                        onSelectedChange={(date) => setSelectedStartDate(date)}
-                        options={{
-                            mainColor: '#8fbc8f'
-                        }}
-                        locale='es-ES'
-                    />
-                    <TouchableOpacity activeOpacity={1} onPress={handleOnPressStartDate} style={{ width: '100%' }}>
-                        <Text style={{ color: '#8fbc8f', textAlign: 'center', backgroundColor: 'white', padding: 20, fontWeight: 'bold' }}>Seleccionar</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
+
+            {showPicker && (<DateTimePicker
+                display='spinner'
+                testID="dateTimePicker"
+                value={date}
+                mode="date"
+                is24Hour={true}
+                locale='es-ES'
+                onChange={onChange}
+            />)}
             {/* salida */}
             <View style={styles.input}>
-                <TouchableOpacity
-                    onPress={handleOnPressStartDateSalida}
-                >
-                    <Text style={{ color: 'black' }}>{selectedStartDateSalida}</Text>
-                </TouchableOpacity>
+                {!showPickerSalida && (<Pressable onPress={toggleDatePickerSalida}>
+                    <TextInput style={{ color: 'black' }} value={fechaSalida === "" ? "Ingrese Fecha de Salida" : moment(fechaSalida).format("DD/MM/YYYY")} onChangeText={setFechaSalida} editable={false} placeholder='Fecha de Salida' />
+                </Pressable>)}
             </View>
-            <Modal
-                animationType="slide"
-                transparent={true}
-                visible={openStartDatePickerSalida}
-            >
-                <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                    <DatePicker
-                        mode="datepicker"
-                        minimumDate={startDateSalida}
-                        selected={startedDateSalida}
-                        onDateChanged={handleChangeStartDateSalida}
-                        onSelectedChange={(date) => setSelectedStartDateSalida(date)}
-                        options={{
-                            mainColor: '#8fbc8f'
-                        }}
-                    />
-                    <TouchableOpacity activeOpacity={1} onPress={handleOnPressStartDateSalida} style={{ width: '100%', }}>
-                        <Text style={{ color: '#8fbc8f', textAlign: 'center', backgroundColor: 'white', padding: 20, fontWeight: 'bold' }}>Seleccionar</Text>
-                    </TouchableOpacity>
-                </View>
-            </Modal>
+
+
+            {showPickerSalida && (<DateTimePicker
+                display='spinner'
+                testID="dateTimePickerSalida"
+                value={dateSalida}
+                mode="date"
+                is24Hour={true}
+                locale='es-ES'
+                onChange={onChangeSalida}
+            />)}
+
 
             <TouchableOpacity style={styles.boton} onPress={() => submitBtn()}>
                 <View style={styles.centrar}>
